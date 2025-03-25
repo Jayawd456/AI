@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini AI Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input, button { padding: 10px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Chat with Gemini AI</h2>
+    <input type="text" id="userInput" placeholder="Ask something...">
+    <button onclick="askGemini()">Send</button>
+    <h3>Response:</h3>
+    <p id="response">Waiting for AI response...</p>
+
+    <script>
+       
+       async function askGemini() {
+    const inputText = document.getElementById("userInput").value;
+    const endpoint = "http://localhost:3000/ask-gemini"; // Correct API route
+
+    try {
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt: inputText }),
+        });
+
+        const result = await response.json();
+        document.getElementById("response").innerText = result.candidates[0]?.output || "No response";
+    } catch (error) {
+        document.getElementById("response").innerText = "Error fetching response";
+        console.error("Error:", error);
+    }
+}
+
+    </script>
+    
+</body>
+</html>
